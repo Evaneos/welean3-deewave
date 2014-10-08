@@ -1,33 +1,40 @@
 require('./init');
-var express = require('express');
-var app = express();
+var koa = require('koa');
+var serve = require('koa-static');
+var app = koa();
 
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+var argv = require('minimist')(process.argv.slice(2));
 
-var argv = require('minimist')(process.argv.slice(2), {
-    alias: {
-        'production': 'prod'
-    }
+app.use(function *(next){
+    yield next;
+    console.log('%s %s - %sms', this.method, this.url, this._requestTook);
 });
 
-app.locals.basepath = argv.basepath || '/';
+// logger
 
-if (!argv.production) {
-    console.log('Dev mode');
-    app.use(require('connect-livereload')({
-        port: argv.livereloadPort
-    }));
-    ['src', 'node_modules'].forEach((folder) => {
-        app.use('/' + folder, express.static(__dirname +'/../../' + folder));
-    });
-} else {
-    console.log('Production mode');
-}
+app.use(function *(next){
+  yield next;
+  console.log('%s %s - %sms', this.method, this.url, this._requestTook);
+});
 
-app.get('/', (req, res) => res.render('index', { URL: req.path }));
+// x-response-time
 
-app.use(express.static(__dirname +'/../../public'));
+app.use(function *(next){
+  var start = new Date();
+  this._requestStartedAt = start;
+  yield next;
+  var ms = new Date() - start;
+  this._requestTook = ms;
+  this.set('X-Response-Time', ms + 'ms');
+});
+
+
+// response
+
+app.use(function *(){
+  this.body = 'Hello World';
+});
+
 
 var port = argv.port || 3000;
 app.listen(port, console.log.bind(null, 'Listening on port ' + port));

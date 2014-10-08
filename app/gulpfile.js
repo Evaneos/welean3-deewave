@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var pkg = require('./package.json');
 require('springbokjs-base/gulptask.js')(pkg, gulp, {
+    generatorsTranspilationEnabled: false,
+    traceurEnabled: false,
     src: {
         css: [
             // here put css files from bower or node_modules or other assets,
