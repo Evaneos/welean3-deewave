@@ -1,8 +1,8 @@
 require('./init');
-var fs = require('fs');
+var fs = require('springbokjs-utils/fs');
 var koa = require('koa');
 var serve = require('koa-static');
-var request = require('koa-request');
+var router = require('koa-router');
 var errorsParser = require('springbokjs-errors');
 var ErrorHtmlRenderer = require('springbokjs-errors/htmlRenderer');
 var errorHtmlRenderer = new ErrorHtmlRenderer();
@@ -54,33 +54,29 @@ render(app, {
   // filters: filters
 });
 
+// router
+
+app.use(router(app));
+
 
 // response
 
-app.use(function *() {
-
-    var options = {
-        url: config.ECHONEST_API_URL + 'song/search?api_key=' + config.ECHONEST_KEY +
-                '&format=json&artist=radiohead&title=karma%20police',
-        headers: { 'User-Agent': 'request' }
-    };
-
-    var response = yield request(options);
-    var info = JSON.parse(response.body);
-
-    yield this.render('content', {
-        info: info,
-        basepath: ''
-    });
-});
-
-
-var port = argv.port || 3000;
-
-app.listen(argv['socket-path'] || port, function() {
-    if (argv['socket-path']) {
-        fs.chmodSync(argv['socket-path'], '777');
+fs.readRecursiveDirectory(__dirname + '/router', { recursive: false, directories: false }, function(file) {
+    if (file.filename.slice(-3) !== '.js') {
+        return;
     }
-    logger.log('Listening on '
-            +(argv['socket-path'] ? ' socket path ' + argv['socket-path'] : 'port ' + port));
+    return require(file.path)(app);
+}).then(() => {
+    var port = argv.port || 3000;
+
+    app.listen(argv['socket-path'] || port, function() {
+        if (argv['socket-path']) {
+            fs.chmodSync(argv['socket-path'], '777');
+        }
+        logger.log('Listening on '
+                +(argv['socket-path'] ? ' socket path ' + argv['socket-path'] : 'port ' + port));
+    });
+}).catch((err) => {
+    errorsParser.log(err);
 });
+
