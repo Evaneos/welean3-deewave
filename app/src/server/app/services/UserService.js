@@ -1,5 +1,5 @@
-export var singleton = true;
-export var dependencies = { spotifyService: 'spotifyService', userManager: 'userManager' };
+var User = require('../modules/user/User').User;
+
 
 export class UserService {
     login(code, callback) {
@@ -10,27 +10,30 @@ export class UserService {
             }
             var accessToken = response.body.access_token;
             var me;
-            return this.spotifyService.getMe().then((result) => me = result).then(() => {
-                return this.userManager.findOne().byId(me.body.id).fetch();
+            return this.spotifyService.getMe(accessToken).then((result) => {
+                me = result.body;
+            }).then(() => {
+                console.log(me);
+                return this.userManager.findOneById(me.id);
             }).then((user) => {
 
                 var toInsert = false;
                 if (!user) {
                     toInsert = true;
-                    user = this.di.createInstance('User');
-                    user.set('_id', me.body.id);
+                    user = new User();
+                    user.set('_id', me.id);
                     //var artists = yield di.spotifyService.getMyArtists(accessToken);
                     //console.log(artists);
                 }
 
-                user.set('displayName', me.body.display_name);
-                user.set('email', me.body.email);
-                user.set('product', me.body.product);
-                user.set('type', me.body.type);
+                user.set('displayName', me.display_name);
+                user.set('email', me.email);
+                user.set('product', me.product);
+                user.set('type', me.type);
 
                 user.set('lastConnection', new Date());
-                user.set('refreshToken', me.body.refreshToken);
-                user.set('accessToken', me.body.accessToken);
+                user.set('refreshToken', me.refreshToken);
+                user.set('accessToken', me.accessToken);
 
                 if (toInsert) {
                     return this.createProfile(accessToken).then((profilId) => {
@@ -50,3 +53,7 @@ export class UserService {
         });
     }
 }
+
+module.exports = new UserService();
+module.exports.spotifyService = require('./SpotifyService');
+module.exports.userManager = require('../modules/user/UserManager');

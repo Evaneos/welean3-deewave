@@ -1,7 +1,5 @@
 var request = require('springbokjs-utils/lib/request');
 
-export var singleton = true;
-
 export class SpotifyService {
     getTokens(redirectUri, code) {
         return request.post({
@@ -54,3 +52,5 @@ export class SpotifyService {
         });
     }
 }
+
+module.exports = new SpotifyService();

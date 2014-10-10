@@ -1,5 +1,6 @@
 common:
     basepath: '/'
 server:
+    mongodb: 'mongodb://localhost:27017/deewave'
     db:
         default: { dbName: 'deewave' }

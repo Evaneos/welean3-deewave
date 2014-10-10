@@ -1,7 +1,8 @@
 var generators = require('springbokjs-utils/lib/generators');
 var querystring = require('querystring');
+var userService = require('../app/services/UserService');
 
-module.exports = function(app, di) {
+module.exports = function(app) {
     app.get('/spotify/login', function *(next) {
         var state = generators.randomCode(16);
         this.session.spotifyAuthState = state;
@@ -30,7 +31,7 @@ module.exports = function(app, di) {
 
         delete this.session.spotifyAuthState;
 
-        var accessToken = yield di.userService.login(code, 'http://' + this.request.host + '/spotify');
+        var accessToken = yield userService.login(code, 'http://' + this.request.host + '/spotify');
 
         // Pass the token to the browser to make requests from there
         this.redirect('/player/#' + querystring.stringify({ accessToken: accessToken }));

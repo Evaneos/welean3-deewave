@@ -23,8 +23,7 @@ var errorsParser = require('springbokjs-errors');
 var path = require('path');
 var app = koa();
 
-var Di = require('springbokjs-di').Di;
-var di = new Di();
+var store = require('./app/Store');
 
 var argv = require('minimist')(process.argv.slice(2));
 
@@ -45,14 +44,12 @@ app.use(router(app));
 
 // initialize
 
-Promise.resolve(config.db && require('springbokjs-db').initialize(config.db)).then(() => {
-    return di.directory(__dirname + '/app/');
-}).then(() => {
+store.init().then(() => {
     return fs.readRecursiveDirectory(__dirname + '/router', { recursive: false, directories: false }, function(file) {
         if (file.filename.slice(-3) !== '.js') {
             return;
         }
-        return require(file.path)(app, di);
+        return require(file.path)(app);
     });
 }).then(() => {
     var port = argv.port || 3000;
