@@ -1,7 +1,8 @@
 var request = require('springbokjs-utils/lib/request');
 
+export var singleton = true;
 export class SpotifyService {
-    static getTokens(redirectUri, code) {
+    getTokens(redirectUri, code) {
         return request.post({
             url: 'https://accounts.spotify.com/api/token',
             form: {
@@ -15,7 +16,7 @@ export class SpotifyService {
         });
     }
 
-    static getMe(accessToken) {
+    getMe(accessToken) {
         return request.get({
             url: 'https://api.spotify.com/v1/me',
             headers: { 'Authorization': 'Bearer ' + accessToken },
@@ -23,7 +24,7 @@ export class SpotifyService {
         });
     }
 
-    static getMyArtists(accessToken, limit = 20, offset = 0) {
+    getMyArtists(accessToken, limit = 50, offset = 0) {
         return request.get({
             url: 'https://api.spotify.com/v1/me/tracks?limit=' + limit + '&offset=' + offset,
             headers: { 'Authorization': 'Bearer ' + accessToken },
@@ -32,10 +33,11 @@ export class SpotifyService {
             console.log(response.body);
             var artists = {};
             response.body.items.forEach((item) => {
-                if (!(item.artists && item.artists.length)) {
+                var track = item.track;
+                if (!(track.artists && track.artists.length)) {
                     return;
                 }
-                item.artists.forEach((artist) => {
+                track.artists.forEach((artist) => {
                     if (artists[artist.id]) {
                         return;
                     }

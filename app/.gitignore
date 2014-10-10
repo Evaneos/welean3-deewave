@@ -5,6 +5,6 @@
 vendor
 node_modules
 bower_components
-/watch.log
+/log
 
 /src/config/local.yml

@@ -1,9 +1,8 @@
 var generators = require('springbokjs-utils/lib/generators');
 var request = require('koa-request');
 var querystring = require('querystring');
-var SpotifyService = require('../services/SpotifyService').SpotifyService;
 
-module.exports = function(app) {
+module.exports = function(app, di) {
     app.get('/spotify/login', function *(next) {
         var state = generators.randomCode(16);
         this.session.spotifyAuthState = state;
@@ -32,16 +31,12 @@ module.exports = function(app) {
 
         delete this.session.spotifyAuthState;
 
-        var response = yield SpotifyService.getTokens('http://' + this.request.host + '/spotify', code);
+        var response = yield di.spotifyService.getTokens('http://' + this.request.host + '/spotify', code);
         if (response.statusCode !== 200) {
             throw new Error(response.body);
             //return this.redirect('/#' + querystring.stringify({ error: 'invalid_token' }));
         }
         var accessToken = response.body.access_token, refreshToken = response.body.refresh_token;
-
-        var artists = yield SpotifyService.getMyArtists(accessToken);
-        console.log(artists);
-
         var me = yield request.get({
             url: 'https://api.spotify.com/v1/me',
             headers: { 'Authorization': 'Bearer ' + accessToken },
@@ -49,7 +44,40 @@ module.exports = function(app) {
         });
         console.log(me.body);
 
+        var userManager = di.userManager;
+
+        var user = yield userManager.findOne().byId(me.body.id).fetch();
+        var toInsert = false;
+        if (!user) {
+            toInsert = true;
+            user = di.createInstance('User');
+            user.set('_id', me.body.id);
+            //var artists = yield di.spotifyService.getMyArtists(accessToken);
+            //console.log(artists);
+        }
+
+        user.set('displayName', me.body.display_name);
+        user.set('email', me.body.email);
+        user.set('product', me.body.product);
+        user.set('type', me.body.type);
+
+        user.set('lastConnection', new Date());
+        user.set('refreshToken', me.body.refreshToken);
+        user.set('accessToken', me.body.accessToken);
+
+        if (toInsert) {
+            var artists = yield di.spotifyService.getMyArtists(accessToken);
+
+
+            console.log(artists);
+            yield userManager.insert(user);
+
+
+        } else {
+            yield userManager.update(user);
+        }
+
         // Pass the token to the browser to make requests from there
-        this.redirect('/player/#' + querystring.stringify({ accessToken: accessToken, refreshToken: refreshToken }));
+        this.redirect('/player/#' + querystring.stringify({ accessToken: accessToken }));
     });
 };

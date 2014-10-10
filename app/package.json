@@ -12,11 +12,13 @@
     "koa-session": "^2.0.0",
     "koa-static": "^1.4.7",
     "minimist": "^1.1.0",
-    "querystring": "^0.2.0",
     "springbokjs-base": "^0.23.1",
+    "springbokjs-db": "git://github.com/christophehurpeau/springbokjs-db",
+    "springbokjs-di": "0.0.2",
     "springbokjs-errors": "^0.1.4",
     "springbokjs-logger": "^1.6.0",
+    "springbokjs-models": "^0.0.1",
     "springbokjs-shim": "^0.2.0",
-    "springbokjs-utils": "^0.5.8"
+    "springbokjs-utils": "^0.5.9"
   }
 }

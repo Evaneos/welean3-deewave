@@ -17,3 +17,5 @@
 *.lock
 *.swp
 *.out
+
+/mongodb

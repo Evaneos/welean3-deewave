@@ -2,7 +2,7 @@ build-docker:
 	docker build -t weleanit-music ../docker/
 
 launch-docker:
-	docker run -ti -v $$(echo `pwd`):/weleanit-music -p 3000:3000 weleanit-music
+	docker run -ti -v $$(echo `pwd`):/weleanit-music -v $$(echo `pwd`)/../mongodb:/data/db -p 3000:3000 --net="host" weleanit-music /sbin/my_init --enable-insecure-key
 
 install:
 	npm install
@@ -15,4 +15,4 @@ clean:
 	gulp springbokjs-shim
 
 watch:
-	gulp watch --env='dev' >watch.log 2>&1
+	gulp watch --env='dev'
