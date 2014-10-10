@@ -1,22 +1,20 @@
 // error handler
-var argv = require('minimist')(process.argv.slice(2));
 var errorsParser = require('springbokjs-errors');
 var ErrorHtmlRenderer = require('springbokjs-errors/htmlRenderer');
 var errorHtmlRenderer = new ErrorHtmlRenderer();
 
-module.exports = function(app) {
+/**
+ * Catch all exceptions
+ */
+process.on('uncaughtException', function(err) {
+    try {
+        errorsParser.log(err);
+    } catch (err2) {
+        console.error(err2.stack);
+    }
+});
 
-    /**
-     * Catch all exceptions
-     */
-    process.on('uncaughtException', function(err) {
-        try {
-            errorsParser.log(err);
-        } catch (err2) {
-            console.error(err2.stack);
-        }
-    });
-
+module.exports = function(app, argv) {
     app.use(function *(next) {
         try {
             yield next;

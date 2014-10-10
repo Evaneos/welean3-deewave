@@ -8,5 +8,5 @@ module.exports = function(app) {
         var ms = Date.now() - start;
         this._requestTook = ms;
         this.set('X-Response-Time', ms + 'ms');
-  });
+    });
 };

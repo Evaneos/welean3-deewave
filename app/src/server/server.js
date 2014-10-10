@@ -20,14 +20,12 @@ var serve = require('koa-static');
 var session = require('koa-session');
 
 var errorsParser = require('springbokjs-errors');
-var ErrorHtmlRenderer = require('springbokjs-errors/htmlRenderer');
-var errorHtmlRenderer = new ErrorHtmlRenderer();
 var path = require('path');
 var app = koa();
 
 var argv = require('minimist')(process.argv.slice(2));
 
-require('./helpers')(app);
+require('./helpers')(app, argv);
 
 // serve static content
 
