@@ -6,14 +6,14 @@ export class EventsHandler {
     constructor(canvasManager, drawManager) {
         this.handleStart = function(e) {
             canvasManager.paint = true;
-            drawManager.recordPosition(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
-            canvasManager.redraw();
+            var points = drawManager.recordPosition(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+            canvasManager.draw(points);
         };
 
         this.handleMove = function(e) {
             if(canvasManager.paint) {
-                drawManager.recordPosition(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-                canvasManager.redraw();
+                var points =  drawManager.recordPosition(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+                canvasManager.draw(points);
             }
         };
 

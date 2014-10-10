@@ -51,29 +51,40 @@ export class CanvasManager {
         this.canvas.addEventListener("touchmove"   , this.eventsHandler.handleMove  , false);
     }
 
-    redraw() {
-        this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
-
-        this.context.strokeStyle = 'rgba(39, 174, 96, 1.0)';
+    draw(points) {
+        this.context.strokeStyle = 'rgba(39, 174, 96, 1)';
         this.context.lineJoin    = 'round';
         this.context.lineWidth   = 23;
 
-        var i = 0;
-        var points = this.drawManager.points;
-        var length = points.length;
-        for(; i < length; i++) {
-            this.context.beginPath();
+        this.context.beginPath();
 
-            if(i && points[i] && points[i].dragging) {
-                this.context.moveTo(points[i - 1].x, points[i - 1].y);
+
+        // We only draw a path between the last point and the new one
+        var point = points[0];
+        if(points.length > 1) {
+            var oldPoint = points[0];
+            var newPoint = points[1];
+            if(newPoint && newPoint.dragging) {
+                this.context.moveTo(oldPoint.x, oldPoint.y - 1);
             } else {
-                this.context.moveTo(points[i].x - 1, points[i].y);
+                this.context.moveTo(newPoint.x - 1, newPoint.y);
             }
-
-            this.context.lineTo(points[i].x, points[i].y);
-
-            this.context.closePath();
-            this.context.stroke();
+            point = points[1];
+        } else {
+            if(point && point.dragging) {
+                this.context.moveTo(point.x - 1, point.y - 1);
+            } else {
+                this.context.moveTo(point.x - 1, point.y);
+            }
         }
+
+        this.context.lineTo(point.x, point.y);
+
+        this.context.closePath();
+        this.context.stroke();
+    }
+
+    clear() {
+        this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
     }
 }
