@@ -1,7 +1,6 @@
 require('./init');
 var fs = require('springbokjs-utils/fs');
 var koa = require('koa');
-var render = require('koa-ejs');
 var router = require('koa-router');
 var serve = require('koa-static');
 var session = require('koa-session');
@@ -23,24 +22,7 @@ process.on('uncaughtException', function(err) {
     }
 });
 
-
-// logger
-
-app.use(function *(next){
-  yield next;
-  console.log('%s %s - %sms', this.method, this.url, this._requestTook);
-});
-
-// x-response-time
-
-app.use(function *(next){
-    var start = Date.now();
-    this._requestStartedAt = start;
-    yield next;
-    var ms = Date.now() - start;
-    this._requestTook = ms;
-    this.set('X-Response-Time', ms + 'ms');
-});
+require('./helpers')(app);
 
 // serve static content
 
@@ -50,35 +32,6 @@ app.use(serve(path.join(__dirname, '../../public')));
 
 app.keys = [ config.SESSION_KEY ];
 app.use(session());
-
-// renderer
-
-render(app, {
-    root: path.join(__dirname, 'views'),
-    layout: 'template',
-    viewExt: 'ejs',
-    cache: false,
-    debug: true,
-    // locals: locals,
-    // filters: filters
-});
-
-// error handler
-
-app.use(function *(next) {
-    try {
-        yield next;
-    } catch (err) {
-        errorsParser.log(err);
-        this.status = err.status || 500;
-        if (argv.production) {
-            this.body = err.message;
-        } else {
-            this.body = errorHtmlRenderer.render(err);
-        }
-        this.app.emit('error', err, this);
-    }
-});
 
 // router
 
