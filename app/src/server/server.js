@@ -13,15 +13,6 @@ var app = koa();
 
 var argv = require('minimist')(process.argv.slice(2));
 
-
-process.on('uncaughtException', function(err) {
-    try {
-        errorsParser.log(err);
-    } catch (err2) {
-        console.error(err2.stack);
-    }
-});
-
 require('./helpers')(app);
 
 // serve static content
