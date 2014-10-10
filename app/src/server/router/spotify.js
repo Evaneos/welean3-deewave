@@ -1,13 +1,14 @@
 var generators = require('springbokjs-utils/lib/generators');
 var request = require('koa-request');
 var querystring = require('querystring');
+var SpotifyService = require('../services/SpotifyService').SpotifyService;
 
 module.exports = function(app) {
     app.get('/spotify/login', function *(next) {
         var state = generators.randomCode(16);
         this.session.spotifyAuthState = state;
 
-        var scope = 'user-read-private user-read-email';
+        var scope = 'user-read-private playlist-read-private user-library-read';
         this.redirect('https://accounts.spotify.com/authorize?' +
             querystring.stringify({
                 response_type: 'code',
@@ -31,21 +32,15 @@ module.exports = function(app) {
 
         delete this.session.spotifyAuthState;
 
-        var response = yield request.post({
-            url: 'https://accounts.spotify.com/api/token',
-            form: {
-                code: code,
-                redirect_uri: 'http://' + this.request.host + '/spotify',
-                grant_type: 'authorization_code',
-                client_id: config.spotify.CLIENT_ID,
-                client_secret: config.spotify.CLIENT_SECRET,
-            },
-            json: true
-        });
+        var response = yield SpotifyService.getTokens('http://' + this.request.host + '/spotify', code);
         if (response.statusCode !== 200) {
-            return this.redirect('/#' + querystring.stringify({ error: 'invalid_token' }));
+            throw new Error(response.body);
+            //return this.redirect('/#' + querystring.stringify({ error: 'invalid_token' }));
         }
         var accessToken = response.body.access_token, refreshToken = response.body.refresh_token;
+
+        var artists = yield SpotifyService.getMyArtists(accessToken);
+        console.log(artists);
 
         var me = yield request.get({
             url: 'https://api.spotify.com/v1/me',

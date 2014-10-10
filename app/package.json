@@ -17,6 +17,6 @@
     "springbokjs-errors": "^0.1.4",
     "springbokjs-logger": "^1.6.0",
     "springbokjs-shim": "^0.2.0",
-    "springbokjs-utils": "^0.5.7"
+    "springbokjs-utils": "^0.5.8"
   }
 }
