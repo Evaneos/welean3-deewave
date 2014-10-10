@@ -1,4 +1,6 @@
-
+/*
+	Service responsible for extracting drawing characteristics from a list of points.
+*/
 
 function distance (p1, p2) {
 	if (!p1 || !p2) {
@@ -7,12 +9,13 @@ function distance (p1, p2) {
 	return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.x - p2.x, 2));
 }
 
-function getLength (points) {
+function getDistance (points) {
 	return points.reduce(function (acc, point) {
 		acc.distance = acc.distance + distance(acc.lastPoint, point);
 		acc.lastPoint = point;
-	}, {length: 0}).distance;
-};
+		return acc;
+	}, {distance: 0}).distance;
+}
 
 function getDuration (points) {
 	return points[points.length - 1].time - points[0].time;
@@ -30,17 +33,11 @@ function getSpeeds (points) {
 	return speeds;
 }
 
-function getAvgAcceleration (points) {
-	return getSpeeds(points) / getDuration(points); 
-}
 
-
-function analyseDrawing(points) {
+module.exports = function analyseDrawing(points) {
 	return {
-		duration: getDuration(),
-		length: getLength(),
-		avgSpeed: getAvgSpeed(),
-		avgAcceleration: getAvgAcceleration()		
-		
+		duration: getDuration(points),
+		length: getDistance(points),
+		avgSpeed: getAvgSpeed(points),
 	};
-}
+};

@@ -13,11 +13,12 @@
 */
 
 require('./init');
-var fs = require('springbokjs-utils/fs');
-var koa = require('koa');
-var router = require('koa-router');
-var serve = require('koa-static');
-var session = require('koa-session');
+var fs       = require('springbokjs-utils/fs');
+var koa      = require('koa');
+var router   = require('koa-router');
+var serve    = require('koa-static');
+var session  = require('koa-session');
+var bodyParser     = require('koa-bodyparser');
 
 var errorsParser = require('springbokjs-errors');
 var path = require('path');
@@ -33,6 +34,9 @@ require('./helpers')(app, argv);
 
 app.use(serve(path.join(__dirname, '../../public')));
 
+// body parser
+
+app.use(bodyParser());
 // session
 
 app.keys = [ config.SESSION_KEY ];

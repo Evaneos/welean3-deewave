@@ -1,0 +1,7 @@
+server:
+    songify:
+        drawingSpeed: 
+            max: 5
+            min: 0
+
+    ECHONEST_API_HOST: developer.echonest.com/api/v4
