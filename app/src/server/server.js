@@ -54,10 +54,26 @@ render(app, {
   // filters: filters
 });
 
+// error handler
+
+app.use(function *(next) {
+    try {
+        yield next;
+    } catch (err) {
+        errorsParser.log(err);
+        this.status = err.status || 500;
+        if (argv.production) {
+            this.body = err.message;
+        } else {
+            this.body = errorHtmlRenderer.render(err);
+        }
+        this.app.emit('error', err, this);
+    }
+});
+
 // router
 
 app.use(router(app));
-
 
 // response
 
@@ -79,4 +95,3 @@ fs.readRecursiveDirectory(__dirname + '/router', { recursive: false, directories
 }).catch((err) => {
     errorsParser.log(err);
 });
-
