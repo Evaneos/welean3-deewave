@@ -1,12 +1,14 @@
 require('./init');
 var fs = require('springbokjs-utils/fs');
 var koa = require('koa');
-var serve = require('koa-static');
+var render = require('koa-ejs');
 var router = require('koa-router');
+var serve = require('koa-static');
+var session = require('koa-session');
+
 var errorsParser = require('springbokjs-errors');
 var ErrorHtmlRenderer = require('springbokjs-errors/htmlRenderer');
 var errorHtmlRenderer = new ErrorHtmlRenderer();
-var render = require('koa-ejs');
 var path = require('path');
 var app = koa();
 
@@ -32,26 +34,33 @@ app.use(function *(next){
 // x-response-time
 
 app.use(function *(next){
-  var start = Date.now();
-  this._requestStartedAt = start;
-  yield next;
-  var ms = Date.now() - start;
-  this._requestTook = ms;
-  this.set('X-Response-Time', ms + 'ms');
+    var start = Date.now();
+    this._requestStartedAt = start;
+    yield next;
+    var ms = Date.now() - start;
+    this._requestTook = ms;
+    this.set('X-Response-Time', ms + 'ms');
 });
 
+// serve static content
+
 app.use(serve(path.join(__dirname, '../../public')));
+
+// session
+
+app.keys = [ config.SESSION_KEY ];
+app.use(session());
 
 // renderer
 
 render(app, {
-  root: path.join(__dirname, 'views'),
-  layout: 'template',
-  viewExt: 'ejs',
-  cache: false,
-  debug: true,
-  // locals: locals,
-  // filters: filters
+    root: path.join(__dirname, 'views'),
+    layout: 'template',
+    viewExt: 'ejs',
+    cache: false,
+    debug: true,
+    // locals: locals,
+    // filters: filters
 });
 
 // error handler
