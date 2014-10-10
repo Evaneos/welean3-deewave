@@ -17,29 +17,32 @@ function main() {
   context  = canvas.getContext('2d');
   paint = false;
 
-  canvas.addEventListener('mousedown', function(e){
-    // var mouseX = e.pageX - this.offsetLeft;
-    // var mouseY = e.pageY - this.offsetTop;
+  canvas.addEventListener('mousedown', handleStart, false);
+  canvas.addEventListener('mousemove', handleMove, false);
+  canvas.addEventListener('mouseup', handleEnd, false);
+  canvas.addEventListener('mouseleave', handleEnd, false);
+  canvas.addEventListener("touchstart", handleStart, false);
+  canvas.addEventListener("touchend", handleEnd, false);
+  canvas.addEventListener("touchcancel", handleEnd, false);
+  canvas.addEventListener("touchleave", handleEnd, false);
+  canvas.addEventListener("touchmove", handleMove, false);
+}
 
+function handleStart(e) {
     paint = true;
     addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
     redraw();
-  });
+}
 
-  canvas.addEventListener('mousemove', function(e){
+function handleMove(e) {
     if(paint){
-      addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-      redraw();
+        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+        redraw();
     }
-  });
+}
 
-  canvas.addEventListener('mouseup', function(e){
+function handleEnd(e) {
     paint = false;
-  });
-
-  canvas.addEventListener('mouseleave', function(e){
-    paint = false;
-  });
 }
 
 function addClick(x, y, dragging)
