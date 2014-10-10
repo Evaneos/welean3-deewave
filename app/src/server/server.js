@@ -6,6 +6,8 @@ var request = require('koa-request');
 var errorsParser = require('springbokjs-errors');
 var ErrorHtmlRenderer = require('springbokjs-errors/htmlRenderer');
 var errorHtmlRenderer = new ErrorHtmlRenderer();
+var render = require('koa-ejs');
+var path = require('path');
 var app = koa();
 
 var argv = require('minimist')(process.argv.slice(2));
@@ -38,20 +40,38 @@ app.use(function *(next){
   this.set('X-Response-Time', ms + 'ms');
 });
 
+app.use(serve(path.join(__dirname, '../../public')));
+
+// renderer
+
+render(app, {
+  root: path.join(__dirname, 'views'),
+  layout: 'template',
+  viewExt: 'ejs',
+  cache: false,
+  debug: true,
+  // locals: locals,
+  // filters: filters
+});
+
 
 // response
 
 app.use(function *() {
 
     var options = {
-        url: config.ECHONEST_API_URL + 'song/search?api_key=' + config.ECHONEST_KEY + '&format=json&artist=radiohead&title=karma%20police',
+        url: config.ECHONEST_API_URL + 'song/search?api_key=' + config.ECHONEST_KEY +
+                '&format=json&artist=radiohead&title=karma%20police',
         headers: { 'User-Agent': 'request' }
     };
 
     var response = yield request(options);
     var info = JSON.parse(response.body);
 
-    this.body = info;
+    yield this.render('content', {
+        info: info,
+        basepath: ''
+    });
 });
 
 

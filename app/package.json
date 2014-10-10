@@ -1,5 +1,5 @@
 {
-  "name": "weleanit-music",
+  "name": "deewave",
   "private": true,
   "version": "0.0.1",
   "dependencies": {
@@ -13,6 +13,7 @@
     "springbokjs-logger": "^1.6.0",
     "springbokjs-shim": "^0.2.0",
     "springbokjs-utils": "^0.5.7",
-    "koa-request": "^1.0.0"
+    "koa-request": "^1.0.0",
+    "koa-ejs": "^1.1.2"
   }
 }
