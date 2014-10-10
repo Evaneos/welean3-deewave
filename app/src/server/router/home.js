@@ -11,7 +11,7 @@ module.exports = function(app) {
         var response = yield request(options);
         var info = JSON.parse(response.body);
 
-        yield this.render('content', {
+        yield this.render('draw', {
             info: info,
             basepath: ''
         });

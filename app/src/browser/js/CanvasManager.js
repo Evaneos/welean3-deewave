@@ -23,7 +23,6 @@ export class CanvasManager {
 
     init() {
         var canvasElm = document.getElementById('draw');
-        if(!canvasElm) return false;
         this.canvas   = document.createElement('canvas');
         this.canvas.setAttribute('width', this.size.width);
         this.canvas.setAttribute('height', this.size.height);
