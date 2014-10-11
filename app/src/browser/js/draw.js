@@ -14,5 +14,5 @@ function main() {
     var canvasManager = new CanvasManager(CANVAS_WIDHT, CANVAS_HEIGHT);
     canvasManager.init();
 
-    
+
 }
