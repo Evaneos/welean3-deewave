@@ -82,6 +82,7 @@ export class EchoNestService {
                     max_tempo: songQuery.tempoRange[1],                    
                     min_energy: songQuery.energyRange[0],
                     max_energy: songQuery.energyRange[1],
+                    mood: songQuery.mood,
                     sort: 'song_hotttnesss-desc',
                     limit: 'true'
                 }

@@ -4,17 +4,11 @@
 const minRangeInterval = 0.01;
 
 function _getRange (config, value) {
-	var range = value - config.min ;
-
-	// range between 0 and 1
-	range = range / (config.max - config.min);
-
 	// For medium values, the range is big. For extreme value, range is much larger (too prevent the no value effect in extrema)
-	var rangeInterval = Math.max(minRangeInterval, Math.pow(2*((1 - range) - 0.5), 2) / 4);
-	range = Math.min(range, 1 - rangeInterval);
-	range = Math.max(range, 0 + rangeInterval);
-	console.log(range);
-	return [range - rangeInterval, range + rangeInterval];
+	var rangeInterval = Math.max(minRangeInterval, Math.pow(2*((1 - value) - 0.5), 2) / 4);
+	value = Math.min(value, 1 - rangeInterval);
+	value = Math.max(value, 0 + rangeInterval);
+	return [value - rangeInterval, value + rangeInterval];
 }
 
 function getTempoRange (drawing) {
@@ -31,11 +25,37 @@ function getEnergy (drawing) {
 	return _getRange(config.songify.drawingSpeed, drawing.avgSpeed);
 }
 
+// This is where the magic happens
+function getMood (drawing) {
+	var possibleMoods = [];
+	// Small drawing with lot of intensity are angry
+	if (drawing.spread < 0.5 && drawing.avgSpeed > 0.5 && drawing.distance > 0.5) {
+		possibleMoods.push("angry");
+	}
+	// Large drawings relatively slow are happy
+	if (drawing.spread > 0.5 && drawing.avgSpeed < 0.6) {
+		possibleMoods.push("happy");
+	}
+	// small drawing relatively slow can be sad 
+	if ( drawing.spread < 0.5 && drawing.avgSpeed < 0.5 && drawing.distance < 0.5) {
+		possibleMoods.push("sad");
+	}
+	// large drawing relatively slow can be relaxing 
+	if (drawing.spread < 0.6 && drawing.speed < 0.5  && drawing.distance > 0.4) {
+		possibleMoods.push("relaxing");
+	}
+	// Large drawing with lot of speed can be excited
+	if (drawing.spread > 0.5 && drawing.speed > 0.5 && drawing.distance > 0.5) {
+		possibleMoods.push("excited");
+	}
+	return (possibleMoods.length)? possibleMoods[(Math.floor(Math.random() * possibleMoods.length))] : undefined;
 
-function getAcousticness (drawing) {
-	return _getRange(config.songify.drawingSpread, drawing.spread).map((range) =>
-		1 - range );
 }
+
+// function getAcousticness (drawing) {
+// 	return _getRange(config.songify.drawingSpread, drawing.spread).map((range) =>
+// 		1 - range );
+// }
 
 function getAcousticness (drawing) {
 	return _getRange(config.songify.drawingSpread, drawing.spread);
@@ -46,6 +66,7 @@ module.exports = function (drawing) {
 		tempoRange: getTempoRange(drawing),
 		danceabilityRange: getDanceability(drawing),
 		energyRange: getEnergy(drawing),
-		acousticnessRange: getAcousticness(drawing)
+		acousticnessRange: getAcousticness(drawing),
+		mood: getMood(drawing) 
 	};
 };
