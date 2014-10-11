@@ -2,12 +2,16 @@
 	Service responsible for extracting drawing characteristics from a list of points.
 */
 function normalize(value, attr) {
-	var range = value - config.songify[attr].min ;
+	value = value - config.songify[attr].min ;
 
-	// range between 0 and 1
-	range = range / (config.songify[attr].max - config.songify[attr].min);
-
-	return range;
+	// value between 0 and 1
+	value = value / (config.songify[attr].max - config.songify[attr].min);
+	if (isNaN(value)) {
+		value = 0;
+	}
+	value = Math.max(1, value);
+	value = Math.min(0, value);
+	return value;
 }
 
 function distance (p1, p2) {

@@ -2,10 +2,13 @@
 	Service responsible for transforming a drawing info into song informations
 */
 const minRangeInterval = 0.01;
+const maxRangeInterval = 0.1;
 
 function _getRange (config, value) {
 	// For medium values, the range is big. For extreme value, range is much larger (too prevent the no value effect in extrema)
 	var rangeInterval = Math.max(minRangeInterval, Math.pow(2*((1 - value) - 0.5), 2) / 4);
+	rangeInterval = Math.max(minRangeInterval, rangeInterval);
+	rangeInterval = Math.min(maxRangeInterval, rangeInterval);
 	value = Math.min(value, 1 - rangeInterval);
 	value = Math.max(value, 0 + rangeInterval);
 	return [value - rangeInterval, value + rangeInterval];
@@ -33,7 +36,7 @@ function getMood (drawing) {
 		possibleMoods.push("angry");
 	}
 	// Large drawings relatively slow are happy
-	if (drawing.spread > 0.5 && drawing.avgSpeed < 0.6) {
+	if (drawing.spread > 0.5 && drawing.avgSpeed < 0.5) {
 		possibleMoods.push("happy");
 	}
 	// small drawing relatively slow can be sad 
@@ -41,24 +44,17 @@ function getMood (drawing) {
 		possibleMoods.push("sad");
 	}
 	// large drawing relatively slow can be relaxing 
-	if (drawing.spread < 0.6 && drawing.speed < 0.5  && drawing.distance > 0.4) {
+	if (drawing.spread < 0.6 && drawing.speed < 0.5  && drawing.distance > 0.5) {
 		possibleMoods.push("relaxing");
 	}
 	// Large drawing with lot of speed can be excited
 	if (drawing.spread > 0.5 && drawing.speed > 0.5 && drawing.distance > 0.5) {
 		possibleMoods.push("excited");
 	}
-	return (possibleMoods.length)? possibleMoods[(Math.floor(Math.random() * possibleMoods.length))] : undefined;
+	var choosenMood = (possibleMoods.length)? possibleMoods[(Math.floor(Math.random() * possibleMoods.length))] : undefined;
+	console.log(possibleMoods, choosenMood);
+	return choosenMood;
 
-}
-
-// function getAcousticness (drawing) {
-// 	return _getRange(config.songify.drawingSpread, drawing.spread).map((range) =>
-// 		1 - range );
-// }
-
-function getAcousticness (drawing) {
-	return _getRange(config.songify.drawingSpread, drawing.spread);
 }
 
 module.exports = function (drawing) {
@@ -66,7 +62,6 @@ module.exports = function (drawing) {
 		tempoRange: getTempoRange(drawing),
 		danceabilityRange: getDanceability(drawing),
 		energyRange: getEnergy(drawing),
-		acousticnessRange: getAcousticness(drawing),
 		mood: getMood(drawing) 
 	};
 };
