@@ -16,3 +16,6 @@ clean:
 
 watch:
 	gulp watch --env='dev'
+
+prod:
+	node_modules/.bin/gulp --env='prod'

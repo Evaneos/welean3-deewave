@@ -19,8 +19,6 @@ export class UserService {
                     toInsert = true;
                     user = new User();
                     user.set('_id', me.id);
-                    //var artists = yield di.spotifyService.getMyArtists(accessToken);
-                    //console.log(artists);
                 }
 
                 user.set('displayName', me.display_name);

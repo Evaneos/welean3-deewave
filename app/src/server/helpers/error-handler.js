@@ -3,6 +3,10 @@ var errorsParser = require('springbokjs-errors');
 var ErrorHtmlRenderer = require('springbokjs-errors/htmlRenderer');
 var errorHtmlRenderer = new ErrorHtmlRenderer();
 
+if (config.realRootPath) {
+    errorsParser.setPathMapping('/weleanit-music/', config.realRootPath);
+}
+
 /**
  * Catch all exceptions
  */
