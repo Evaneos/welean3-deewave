@@ -1,5 +1,5 @@
-var Point     = require('./Point').Point;
-var DataPoint = require('./DataPoint').DataPoint;
+var Point      = require('./Point').Point;
+var DataPoint  = require('./DataPoint').DataPoint;
 
 /**
  * PointsManager
@@ -40,7 +40,10 @@ export class PointsManager {
      */
     sendPoints() {
         var dataPoints = this.computeDataPoints();
-        // Send it w/ XHR
+
+        $.post('/songify', { 'dataPoints': dataPoints }, function(result) {
+            console.log(result);
+        });
     }
 
     /**
@@ -48,9 +51,10 @@ export class PointsManager {
      */
     computeDataPoints() {
         var dataPoints = [];
+        var self = this;
 
         this.points.forEach(function(point) {
-            dataPoints.push(new DataPoint(point, this.width, this.height));
+            dataPoints.push(new DataPoint(point, self.width, self.height));
         });
 
         return dataPoints;

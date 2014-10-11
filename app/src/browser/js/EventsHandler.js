@@ -21,6 +21,7 @@ export class EventsHandler {
         this.handleEnd = function(e) {
             if(canvasManager.paint) {
                 canvasManager.paint = false;
+                pointsManager.sendPoints();
                 $('.draw-container').hide();
                 $('.player-container').show();
 
