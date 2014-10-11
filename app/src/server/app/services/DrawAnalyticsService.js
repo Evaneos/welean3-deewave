@@ -5,7 +5,7 @@
 function distance (p1, p2) {
 	if (!p1 || !p2) {
 		return 0;
-	} 
+	}
 	return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.x - p2.x, 2));
 }
 

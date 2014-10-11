@@ -31,7 +31,9 @@ module.exports = function(app) {
 
         delete this.session.spotifyAuthState;
 
+
         var accessToken = yield userService.login(code, 'http://' + this.request.host + '/spotify');
+        this.session.accessToken = accessToken;
 
         // Pass the token to the browser to make requests from there
         this.redirect('/player/#' + querystring.stringify({ accessToken: accessToken }));

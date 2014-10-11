@@ -18,7 +18,11 @@ export class EventsHandler {
         };
 
         this.handleEnd = function(e) {
-            canvasManager.paint = false;
+            if (canvasManager.paint) {
+                canvasManager.paint = false;
+                $('.draw-container').hide();
+                $('.player-container').show();
+            }
         };
     }
 }

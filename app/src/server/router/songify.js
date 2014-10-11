@@ -20,7 +20,7 @@ function queryEchonest (songData) {
         }) + "&bucket=tracks",
         json: true
     });
-}  
+}
 
 module.exports = function(app) {
     app.post('/songify', function *(next) {

@@ -2,14 +2,16 @@
 var render = require('koa-ejs');
 var path = require('path');
 
-module.exports = function(app) {
+module.exports = function(app, argv) {
     render(app, {
         root: path.join(__dirname, '../views'),
         layout: 'template',
         viewExt: 'ejs',
         cache: false,
         debug: true,
-        // locals: locals,
+        locals: {
+            basepath: argv.basepath || '/'
+        },
         // filters: filters
     });
 };
