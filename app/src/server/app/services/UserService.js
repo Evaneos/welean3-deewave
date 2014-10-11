@@ -35,12 +35,12 @@ export class UserService {
 
                 if (toInsert) {
                     return this.createProfile(user, me, accessToken).then(() => {
-                        return this.userManager.insert(user);
+                        return this.userManager.insert(user).then(() => user);
                     });
                 } else {
-                    return this.userManager.update(user);
+                    return this.userManager.update(user).then(() => user);
                 }
-            }).then(() => accessToken);
+            });
         });
     }
 
