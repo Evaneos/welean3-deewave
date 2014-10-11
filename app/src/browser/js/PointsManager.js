@@ -1,12 +1,16 @@
-var Point = require('./Point').Point;
+var Point     = require('./Point').Point;
+var DataPoint = require('./DataPoint').DataPoint;
 
 /**
  * PointsManager
  * Manage paths, points, etc..
  */
 export class PointsManager {
-    constructor() {
+    constructor(width, height) {
         this.points = [];
+
+        this.width  = width;
+        this.height = height;
     }
 
     /**
@@ -27,7 +31,29 @@ export class PointsManager {
                 point
             ];
         }
+
         return [point];
+    }
+
+    /**
+     * Send the points to our API
+     */
+    sendPoints() {
+        var dataPoints = this.computeDataPoints();
+        // Send it w/ XHR
+    }
+
+    /**
+     * Transform the points from the canvas to points for the API
+     */
+    computeDataPoints() {
+        var dataPoints = [];
+
+        this.points.forEach(function(point) {
+            dataPoints.push(new DataPoint(point));
+        });
+
+        return dataPoints;
     }
 
     /**

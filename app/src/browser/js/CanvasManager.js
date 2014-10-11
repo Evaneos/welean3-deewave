@@ -17,7 +17,7 @@ export class CanvasManager {
             height: height
         };
 
-        this.pointsManager = new PointsManager();
+        this.pointsManager = new PointsManager(width, height);
         this.eventsHandler = new EventsHandler(this, this.pointsManager);
     }
 
