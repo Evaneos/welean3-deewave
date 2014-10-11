@@ -29,4 +29,11 @@ export class PointsManager {
         }
         return [point];
     }
+
+    /**
+     * Reset the points
+     */
+    reset() {
+        this.points = [];
+    }
 }

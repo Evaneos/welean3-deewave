@@ -86,5 +86,6 @@ export class CanvasManager {
 
     clear() {
         this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
+        this.pointsManager.reset();
     }
 }
