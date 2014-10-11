@@ -4,8 +4,8 @@ var CanvasManager = require('./CanvasManager').CanvasManager;
 
 document.addEventListener('DOMContentLoaded', main, false);
 
-var CANVAS_WIDHT  = 800;
-var CANVAS_HEIGHT = 800;
+var CANVAS_WIDHT  = window.innerWidth;
+var CANVAS_HEIGHT = window.innerHeight;
 
 /**
  * Main function

@@ -1,11 +1,14 @@
-
-<div class="draw-container">
-    <i>Dessinez votre dessin, et la musique s'accordera à votre humeur !</i>
-    <div id="draw"></div>
+<div class="page-draw">
+    <header>
+        <div class="wrap">
+            Un p'tit dessin ?!
+        </div>
+    </header>
+    <div class="container-draw">
+        <div id="draw"></div>
+    </div>
 </div>
-
-<div id="player-container" class="player-container" style="display: none">
-    <i>Chargement en cours....</i>
+<div class="page-player hidden">
+    <table class="player-playlist"></table>
 </div>
-
 <script type="text/javascript" src="<%= basepath %>dist/js/draw.js"></script>

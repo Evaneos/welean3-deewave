@@ -27,8 +27,8 @@ export class EventsHandler {
             if(canvasManager.paint) {
                 canvasManager.paint = false;
                 pointsManager.sendPoints();
-                $('.draw-container').hide();
-                $('.player-container').show();
+                $('.page-draw').hide();
+                $('.page-player').show();
 
                 // See if we reset the canvas + points here
                 // this.canvasManager.clear();
