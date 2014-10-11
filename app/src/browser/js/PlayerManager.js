@@ -10,7 +10,7 @@ class PlayerManager {
 
         var spotifyIds = tracks.map((track) => track.foreign_id.substring(14) );
         var div = document.createElement('div');
-        div.innerHTML = '<iframe width="640" height="420" src="https:/'
+        div.innerHTML = '<iframe width="640" height="620" src="https:/'
                 + '/embed.spotify.com/?uri=spotify:trackset:PREFEREDTITLE:'
                 + spotifyIds.join(',') + '" frameborder="0" allowtransparency="true"></iframe>';
         player.appendChild(div);
