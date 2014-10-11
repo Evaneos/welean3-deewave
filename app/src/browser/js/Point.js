@@ -6,9 +6,9 @@
  */
 export class Point {
     constructor(x, y, dragging) {
-        this.x = x;
-        this.y = y;
-        this.dragging  = dragging || false;
-        this.timestamp = Date.now();
+        this.x        = x;
+        this.y        = y;
+        this.dragging = dragging || false;
+        this.time     = Date.now();
     }
 }
