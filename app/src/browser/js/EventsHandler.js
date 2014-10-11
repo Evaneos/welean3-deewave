@@ -4,25 +4,31 @@
  */
 export class EventsHandler {
     constructor(canvasManager, pointsManager) {
-        this.handleStart = function(e) {
-            canvasManager.paint = true;
-            var points = pointsManager.recordPosition(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
-            canvasManager.draw(points);
-        };
+        this.canvasManager = canvasManager;
+        this.pointsManager = pointsManager;
+    }
 
-        this.handleMove = function(e) {
-            if(canvasManager.paint) {
-                var points =  pointsManager.recordPosition(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-                canvasManager.draw(points);
-            }
-        };
+    handleStart(e) {
+        this.canvasManager.paint = true;
+        var points = this.pointsManager.recordPosition(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+        this.canvasManager.draw(points);
+    }
 
-        this.handleEnd = function(e) {
-            if(canvasManager.paint) {
-                canvasManager.paint = false;
-                $('.draw-container').hide();
-                $('.player-container').show();
-            }
-        };
+    handleMove(e) {
+        if(this.canvasManager.paint) {
+            var points =  this.pointsManager.recordPosition(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+            this.canvasManager.draw(points);
+        }
+    }
+
+    handleEnd(e) {
+        if(this.canvasManager.paint) {
+            this.canvasManager.paint = false;
+            $('.draw-container').hide();
+            $('.player-container').show();
+
+            // See if we reset the canvas + points here
+            // this.canvasManager.clear();
+        }
     }
 }
