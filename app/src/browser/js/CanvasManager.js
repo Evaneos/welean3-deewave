@@ -53,9 +53,9 @@ export class CanvasManager {
     }
 
     draw(points) {
-        this.context.strokeStyle = 'rgba(39, 174, 96, 1)';
+        this.context.strokeStyle = 'rgba(180, 180, 180, 1)';
         this.context.lineJoin    = 'round';
-        this.context.lineWidth   = 23;
+        this.context.lineWidth   = 10;
 
         this.context.beginPath();
 
