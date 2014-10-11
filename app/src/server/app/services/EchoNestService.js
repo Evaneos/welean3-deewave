@@ -72,13 +72,16 @@ export class EchoNestService {
         var query = {
             api_key: config.ECHONEST_KEY,
             min_energy: songQuery.energyRange[0],
-            max_energy: songQuery.energyRange[1],
+            max_energy: songQuery.energyRange[1],            
+            min_tempo: songQuery.tempoRange[0],
+            max_tempo: songQuery.tempoRange[1],            
+            min_danceability: songQuery.danceabilityRange[0],
+            max_danceability: songQuery.danceabilityRange[1],
             sort: 'song_hotttnesss-desc',
-            limit: 'true'
+            limit: 'true',
+            bucket: 'id:' + id
         };
-        if (songQuery.mood) {
-            query.mood = songQuery.mood + '^1';
-        }
+
         return request.get({
             url: url.format({
                 protocol: 'http',

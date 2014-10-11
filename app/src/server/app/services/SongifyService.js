@@ -15,41 +15,19 @@ function _getRange (value) {
 }
 
 function getEnergy (drawing) {
-	return _getRange(drawing.avgSpeed);
+	return _getRange(drawing.spread);
 }
-
-// This is where the magic happens
-function getMood (drawing) {
-	var possibleMoods = [];
-	// Small drawing with lot of intensity are angry
-	if (drawing.spread < 0.5 && drawing.avgSpeed > 0.5 && drawing.distance > 0.3) {
-		possibleMoods.push("angry");
-	}
-	// Large drawings relatively slow are happy
-	if (drawing.spread > 0.5 && drawing.avgSpeed < 0.5) {
-		possibleMoods.push("happy");
-	}
-	// small drawing relatively slow can be sad 
-	if ( drawing.spread < 0.5 && drawing.avgSpeed < 0.5 && drawing.distance < 0.3) {
-		possibleMoods.push("sad");
-	}
-	// large drawing relatively slow can be relaxing 
-	if (drawing.spread < 0.6 && drawing.avgSpeed < 0.5 ) {
-		possibleMoods.push("relaxing");
-	}
-	// Large drawing with lot of speed can be excited
-	if (drawing.spread > 0.5 && drawing.avgSpeed > 0.5 && drawing.distance > 0.5) {
-		possibleMoods.push("excited");
-	}
-	var choosenMood = (possibleMoods.length)? possibleMoods[(Math.floor(Math.random() * possibleMoods.length))] : undefined;
-	console.log(possibleMoods, choosenMood);
-	return choosenMood;
-
+function getDanceability (drawing) {
+	return _getRange(drawing.distance);
+}
+function getTempo (drawing) {
+	return _getRange(drawing.avgSpeed).map((range) => 50 + range * 200);
 }
 
 module.exports = function (drawing) {
 	return {
 		energyRange: getEnergy(drawing),
-		mood: getMood(drawing) 
+		tempoRange: getTempo(drawing),
+		danceabilityRange: getDanceability(drawing)
 	};
 };
