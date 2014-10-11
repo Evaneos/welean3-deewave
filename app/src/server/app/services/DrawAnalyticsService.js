@@ -33,11 +33,22 @@ function getSpeeds (points) {
 	return speeds;
 }
 
+function getSpread(points) {
+	var xs = points.map((point) => point.x);
+	var ys = points.map((point) => point.y);
+	var minX = Math.min.apply(Math, xs);
+	var minY = Math.min.apply(Math, ys);
+	var maxX = Math.max.apply(Math, xs);
+	var maxY = Math.max.apply(Math, ys);
+	return (maxX - minX) + (maxY - minY) / 2;
+}
+
 
 module.exports = function analyseDrawing(points) {
 	return {
 		duration: getDuration(points),
-		length: getDistance(points),
+		distance: getDistance(points),
 		avgSpeed: getAvgSpeed(points),
+		spread: getSpread(points),
 	};
 };

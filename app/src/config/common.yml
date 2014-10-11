@@ -1,7 +1,13 @@
 server:
     songify:
         drawingSpeed: 
-            max: 8
+            max: 6
+            min: 0        
+        drawingDistance: 
+            max: 5
+            min: 0        
+        drawingSpread: 
+            max: 1
             min: 0
 
     ECHONEST_API_HOST: developer.echonest.com/api/v4
