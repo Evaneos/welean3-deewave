@@ -1,11 +1,13 @@
 /**
  * Data point (for the API)
  * @param {Point} point
+ * @param {Int}   width
+ * @param {Int}   height
  */
 export class DataPoint {
-    constructor(point) {
-        this.x        = point.x;
-        this.y        = point.y;
+    constructor(point, width, height) {
+        this.x        = point.x / width;
+        this.y        = point.y / height;
         this.time     = point.time || Date.now();
     }
 }

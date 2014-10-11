@@ -50,7 +50,7 @@ export class PointsManager {
         var dataPoints = [];
 
         this.points.forEach(function(point) {
-            dataPoints.push(new DataPoint(point));
+            dataPoints.push(new DataPoint(point, this.width, this.height));
         });
 
         return dataPoints;
