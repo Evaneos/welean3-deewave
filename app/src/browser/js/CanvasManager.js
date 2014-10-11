@@ -44,11 +44,11 @@ export class CanvasManager {
         this.canvas.addEventListener('mouseup'     , this.eventsHandler.handleEnd   , false);
         this.canvas.addEventListener('mouseleave'  , this.eventsHandler.handleEnd   , false);
         // Touch
-        this.canvas.addEventListener("touchstart"  , this.eventsHandler.handleStart , false);
-        this.canvas.addEventListener("touchend"    , this.eventsHandler.handleEnd   , false);
-        this.canvas.addEventListener("touchcancel" , this.eventsHandler.handleEnd   , false);
-        this.canvas.addEventListener("touchleave"  , this.eventsHandler.handleEnd   , false);
-        this.canvas.addEventListener("touchmove"   , this.eventsHandler.handleMove  , false);
+        this.canvas.addEventListener('touchstart'  , this.eventsHandler.handleStart , false);
+        this.canvas.addEventListener('touchmove'   , this.eventsHandler.handleMove  , false);
+        this.canvas.addEventListener('touchleave'  , this.eventsHandler.handleEnd   , false);
+        this.canvas.addEventListener('touchend'    , this.eventsHandler.handleEnd   , false);
+        this.canvas.addEventListener('touchcancel' , this.eventsHandler.handleEnd   , false);
     }
 
     draw(points) {
