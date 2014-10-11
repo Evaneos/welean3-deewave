@@ -43,6 +43,9 @@ export class UserService {
 
     createProfile(user, userData, accessToken) {
         return this.echoNestService.createProfile(userData.id).then((profileId) => {
+            if (!profileId) {
+                throw new Error('Unable to create profile ('+profileId+')');
+            }
             user.set('profileId', profileId);
             var data = {
                 type: 'user'

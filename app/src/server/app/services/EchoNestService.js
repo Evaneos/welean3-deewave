@@ -13,6 +13,12 @@ export class EchoNestService {
             },
             json: true
         }).then((response) => {
+            if (response.statusCode !== 200) {
+                throw new Error(JSON.stringify(response.body));
+            }
+            if (response.body.response.status && response.body.response.status.id) {
+                return response.body.response.status.id;
+            }
             return response.body.response.id;
         });
     }
@@ -23,6 +29,10 @@ export class EchoNestService {
             url: config.ECHONEST_API_URL + url,
             form: form,
             json: true
+        }).then((response) => {
+            if (response.statusCode !== 200) {
+                throw new Error(url + ': ' + JSON.stringify(response.body));
+            }
         });
     }
 
@@ -31,10 +41,10 @@ export class EchoNestService {
             'tasteprofile/update',
             {
                 id: id,
-                action: 'update',
-                data: JSON.stringify({
+                data: JSON.stringify([{
+                    action: 'update',
                     catalog_keyvalues: data
-                })
+                }])
             }
         );
     }
@@ -79,12 +89,8 @@ export class EchoNestService {
             json: true
         }).then( (result) => {
             return result.body.response.songs
-                .filter(function (song) {
-                    return song.tracks.length;
-                })
-                .map(function (song) {
-                    return song.tracks[0];
-                });
+                .filter((song) => song.tracks.length)
+                .map((song) => song.tracks[0]);
         });
     }
 
@@ -101,8 +107,8 @@ export class EchoNestService {
 
     skip(id, item) {
         return this._postApi('tasteprofile/update',
-            { id: id },
             {
+                id: id,
                 action: 'skip',
                 item: item
             }
@@ -111,8 +117,8 @@ export class EchoNestService {
 
     delete(id, item) {
         return this._postApi('tasteprofile/update',
-            { id: id },
             {
+                id: id,
                 action: 'delete',
                 item: item
             }
