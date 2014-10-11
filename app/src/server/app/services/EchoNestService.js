@@ -68,23 +68,25 @@ export class EchoNestService {
     }
 
     getSongs(songQuery, id) {
+
+        var query = {
+            api_key: config.ECHONEST_KEY,
+            min_danceability: songQuery.danceabilityRange[0],
+            max_danceability: songQuery.danceabilityRange[1],
+            min_energy: songQuery.energyRange[0],
+            max_energy: songQuery.energyRange[1],
+            sort: 'song_hotttnesss-desc',
+            limit: 'true'
+        };
+        if (songQuery.mood) {
+            query.mood = songQuery.mood + '^1';
+        }
         return request.get({
             url: url.format({
                 protocol: 'http',
                 host: config.ECHONEST_API_HOST,
                 pathname: 'song/search',
-                query: {
-                    api_key: config.ECHONEST_KEY,
-                    min_danceability: songQuery.danceabilityRange[0],
-                    max_danceability: songQuery.danceabilityRange[1],
-                    min_tempo: songQuery.tempoRange[0],
-                    max_tempo: songQuery.tempoRange[1],                    
-                    min_energy: songQuery.energyRange[0],
-                    max_energy: songQuery.energyRange[1],
-                    mood: songQuery.mood,
-                    sort: 'song_hotttnesss-desc',
-                    limit: 'true'
-                }
+                query: query 
             }) + "&bucket=tracks&bucket=id:spotify",
             json: true
         }).then( (result) => {

@@ -9,8 +9,8 @@ function normalize(value, attr) {
 	if (isNaN(value)) {
 		value = 0;
 	}
-	value = Math.max(1, value);
-	value = Math.min(0, value);
+	value = Math.min(1, value);
+	value = Math.max(0, value);
 	return value;
 }
 
@@ -53,7 +53,7 @@ function getSpread(points) {
 	var minY = Math.min.apply(Math, ys);
 	var maxX = Math.max.apply(Math, xs);
 	var maxY = Math.max.apply(Math, ys);
-	return normalize((maxX - minX) + (maxY - minY) / 2, 'drawingSpread');
+	return normalize(((maxX - minX) + (maxY - minY)), 'drawingSpread');
 }
 
 
