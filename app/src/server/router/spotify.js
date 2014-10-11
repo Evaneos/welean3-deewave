@@ -33,7 +33,6 @@ module.exports = function(app) {
 
 
         var user = yield userService.login(code, 'http://' + this.request.host + '/spotify');
-        console.log(user);
         this.session.accessToken = user.get('accessToken');
         this.session.userId = user.id;
 

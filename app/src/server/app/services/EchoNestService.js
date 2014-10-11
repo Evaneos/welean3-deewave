@@ -1,4 +1,5 @@
 var request = require('springbokjs-utils/lib/request');
+var url = require('url');
 
 export class EchoNestService {
 
@@ -57,6 +58,33 @@ export class EchoNestService {
                 }))
             }
         );
+    }
+
+    getSongs(songQuery, id) {
+        return request.get({
+            url: url.format({
+                protocol: 'http',
+                host: config.ECHONEST_API_HOST,
+                pathname: 'song/search',
+                query: {
+                    api_key: config.ECHONEST_KEY,
+                    bucket: "id:spotify",
+                    rank_type: "familiarity",
+                    min_tempo: songQuery.tempoRange[0],
+                    max_tempo: songQuery.tempoRange[1],
+                    seed_catalog: id
+                }
+            }) + "&bucket=tracks",
+            json: true
+        }).then( (result) => {
+            return result.body.response.songs
+                .filter(function (song) {
+                    return song.tracks.length;
+                })
+                .map(function (song) {
+                    return song.tracks[0];
+                });
+        });
     }
 
 

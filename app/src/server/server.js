@@ -37,6 +37,7 @@ app.use(serve(path.join(__dirname, '../../public')));
 // body parser
 
 app.use(bodyParser());
+
 // session
 
 app.keys = [ config.SESSION_KEY ];

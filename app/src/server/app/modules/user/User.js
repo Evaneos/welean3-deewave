@@ -10,4 +10,8 @@ export class User {
     get(key) {
         return this.data[key];
     }
+
+    get id() {
+    	return this.data._id;
+    } 
 }
