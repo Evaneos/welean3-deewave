@@ -5,3 +5,4 @@ server:
             min: 0
 
     ECHONEST_API_HOST: developer.echonest.com/api/v4
+    ECHONEST_API_URL: http://developer.echonest.com/api/v4/

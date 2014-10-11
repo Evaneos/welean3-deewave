@@ -6,7 +6,7 @@ var isAuthenticated = require('../helpers/authentication').isAuthenticated;
 
 module.exports = function(app) {
     app.post('/songify', isAuthenticated, function *(next) {
-        var user = userManager.findOneById(this.session.userId);
+        var user = yield userManager.findOneById(this.session.userId);
         // Retrieve drawing caracteristics
         var drawData = computeDrawing(this.request.body);
 
@@ -15,7 +15,7 @@ module.exports = function(app) {
 
         // Ask echonest !!
         var result = yield echoNestService.getSongs(songQuery, user.get('profileId'));
- 
+        console.log(result);
         this.body = result;
     });
 
