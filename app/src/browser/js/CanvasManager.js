@@ -1,4 +1,4 @@
-var DrawManager   = require('./DrawManager').DrawManager;
+var PointsManager = require('./PointsManager').PointsManager;
 var EventsHandler = require('./EventsHandler').EventsHandler;
 
 /**
@@ -17,8 +17,8 @@ export class CanvasManager {
             height: height
         };
 
-        this.drawManager   = new DrawManager();
-        this.eventsHandler = new EventsHandler(this, this.drawManager);
+        this.pointsManager = new PointsManager();
+        this.eventsHandler = new EventsHandler(this, this.pointsManager);
     }
 
     init() {

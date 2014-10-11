@@ -1,10 +1,10 @@
 var Point = require('./Point').Point;
 
 /**
- * DrawManager
+ * PointsManager
  * Manage paths, points, etc..
  */
-export class DrawManager {
+export class PointsManager {
     constructor() {
         this.points = [];
     }
