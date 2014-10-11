@@ -7,7 +7,7 @@ export class UserService {
                 throw new Error(response.body);
                 //return this.redirect('/#' + querystring.stringify({ error: 'invalid_token' }));
             }
-            var accessToken = response.body.access_token;
+            var accessToken = response.body.access_token, refreshToken = response.body.refresh_token;
             var me;
             return this.spotifyService.getMe(accessToken).then((result) => {
                 me = result.body;
@@ -30,8 +30,8 @@ export class UserService {
                 user.set('type', me.type);
 
                 user.set('lastConnection', new Date());
-                user.set('refreshToken', me.refreshToken);
-                user.set('accessToken', me.accessToken);
+                user.set('refreshToken', refreshToken);
+                user.set('accessToken', accessToken);
 
                 if (toInsert) {
                     return this.createProfile(user, me, accessToken).then(() => {
