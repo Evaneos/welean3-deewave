@@ -61,7 +61,7 @@ export class EchoNestService {
     }
 
     getSongs(songQuery, id) {
-            console.log(id)
+        console.log(songQuery);
         return request.get({
             url: url.format({
                 protocol: 'http',
@@ -70,10 +70,9 @@ export class EchoNestService {
                 query: {
                     api_key: config.ECHONEST_KEY,
                     bucket: "id:" + id,
-                    rank_type: "familiarity",
                     min_tempo: songQuery.tempoRange[0],
                     max_tempo: songQuery.tempoRange[1],
-                    sort: 'artist_hotttnesss-desc',
+                    sort: 'song_hotttnesss-desc',
                     limit: 'true'
                 }
             }) + "&bucket=tracks&bucket=id:spotify",

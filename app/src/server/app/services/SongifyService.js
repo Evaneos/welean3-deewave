@@ -9,7 +9,7 @@ function getTempoRange (drawing) {
 	tempo = Math.min(tempo, 1 - rangeInterval);
 	tempo = Math.max(tempo, rangeInterval);
 	return [tempo - rangeInterval, tempo + rangeInterval].map(function (tempo) {
-		return tempo * 500;
+		return tempo * 300;
 	});
 }
 

@@ -9,13 +9,11 @@ module.exports = function(app) {
         var user = yield userManager.findOneById(this.session.userId);
         // Retrieve drawing caracteristics
         var drawData = computeDrawing(this.request.body);
-
         // Retrieve song characteristics
         var songQuery = songify(drawData);
 
         // Ask echonest !!
         var result = yield echoNestService.getSongs(songQuery, user.get('profileId'));
-        console.log(result);
         this.body = result;
     });
 

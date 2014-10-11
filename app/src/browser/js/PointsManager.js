@@ -1,6 +1,8 @@
 var Point      = require('./Point').Point;
 var DataPoint  = require('./DataPoint').DataPoint;
 
+
+var PlayerManager = require('./PlayerManager').PlayerManager;
 /**
  * PointsManager
  * Manage paths, points, etc..
@@ -41,8 +43,17 @@ export class PointsManager {
     sendPoints() {
         var dataPoints = this.computeDataPoints();
 
-        $.post('/songify', { 'dataPoints': dataPoints }, function(result) {
-            console.log(result);
+        // LOL WTF JQuery
+        $.ajax({
+            url: '/songify',
+            type: 'POST',
+            data: JSON.stringify(dataPoints),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: false,
+            success: function(tracks) {
+                PlayerManager.display(tracks);
+            }
         });
     }
 
