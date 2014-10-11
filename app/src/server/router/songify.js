@@ -9,6 +9,7 @@ module.exports = function(app) {
         var user = yield userManager.findOneById(this.session.userId);
         // Retrieve drawing caracteristics
         var drawData = computeDrawing(this.request.body);
+        console.log(drawData);
         // Retrieve song characteristics
         var songQuery = songify(drawData);
 

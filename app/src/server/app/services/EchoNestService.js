@@ -23,9 +23,6 @@ export class EchoNestService {
             url: config.ECHONEST_API_URL + url,
             form: form,
             json: true
-        }).then((response) => {
-            console.log(url, form, response.body);
-            return response;
         });
     }
 
@@ -61,7 +58,6 @@ export class EchoNestService {
     }
 
     getSongs(songQuery, id) {
-        console.log(songQuery);
         return request.get({
             url: url.format({
                 protocol: 'http',
@@ -78,7 +74,6 @@ export class EchoNestService {
             }) + "&bucket=tracks&bucket=id:spotify",
             json: true
         }).then( (result) => {
-            console.log(result.body.response);
             return result.body.response.songs
                 .filter(function (song) {
                     return song.tracks.length;

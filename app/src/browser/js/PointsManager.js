@@ -2,7 +2,7 @@ var Point      = require('./Point').Point;
 var DataPoint  = require('./DataPoint').DataPoint;
 
 
-var PlayerManager = require('./PlayerManager').PlayerManager;
+var PlayerManager = require('./PlayerManager')
 /**
  * PointsManager
  * Manage paths, points, etc..

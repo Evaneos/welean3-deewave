@@ -12,7 +12,6 @@ export class UserService {
             return this.spotifyService.getMe(accessToken).then((result) => {
                 me = result.body;
             }).then(() => {
-                console.log(me);
                 return this.userManager.findOneById(me.id);
             }).then((user) => {
                 var toInsert = false;
@@ -46,7 +45,6 @@ export class UserService {
 
     createProfile(user, userData, accessToken) {
         return this.echoNestService.createProfile(userData.id).then((profileId) => {
-            console.log(profileId);
             user.set('profileId', profileId);
             var data = {
                 type: 'user'

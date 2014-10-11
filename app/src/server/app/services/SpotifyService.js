@@ -29,7 +29,6 @@ export class SpotifyService {
             headers: { 'Authorization': 'Bearer ' + accessToken },
             json: true
         }).then((response) => {
-            console.log(response.body);
             var artists = {};
             response.body.items.forEach((item) => {
                 var track = item.track;

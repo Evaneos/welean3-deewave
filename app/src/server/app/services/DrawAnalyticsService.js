@@ -22,7 +22,7 @@ function getDuration (points) {
 }
 
 function getAvgSpeed (points) {
-	return getDistance(points) / getDuration(points);
+	return 1000 * getDistance(points) / getDuration(points);
 }
 
 function getSpeeds (points) {
