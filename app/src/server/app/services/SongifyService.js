@@ -14,10 +14,6 @@ function _getRange (value) {
 	return [value - rangeInterval, value + rangeInterval];
 }
 
-function getDanceability (drawing) {
-	return _getRange(drawing.distance);
-}
-
 function getEnergy (drawing) {
 	return _getRange(drawing.avgSpeed);
 }
@@ -26,7 +22,7 @@ function getEnergy (drawing) {
 function getMood (drawing) {
 	var possibleMoods = [];
 	// Small drawing with lot of intensity are angry
-	if (drawing.spread < 0.5 && drawing.avgSpeed > 0.5 && drawing.distance > 0.5) {
+	if (drawing.spread < 0.5 && drawing.avgSpeed > 0.5 && drawing.distance > 0.3) {
 		possibleMoods.push("angry");
 	}
 	// Large drawings relatively slow are happy
@@ -53,7 +49,6 @@ function getMood (drawing) {
 
 module.exports = function (drawing) {
 	return {
-		danceabilityRange: getDanceability(drawing),
 		energyRange: getEnergy(drawing),
 		mood: getMood(drawing) 
 	};

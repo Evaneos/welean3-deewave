@@ -71,8 +71,6 @@ export class EchoNestService {
 
         var query = {
             api_key: config.ECHONEST_KEY,
-            min_danceability: songQuery.danceabilityRange[0],
-            max_danceability: songQuery.danceabilityRange[1],
             min_energy: songQuery.energyRange[0],
             max_energy: songQuery.energyRange[1],
             sort: 'song_hotttnesss-desc',
