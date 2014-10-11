@@ -26,6 +26,7 @@ export class CanvasManager {
         this.canvas   = document.createElement('canvas');
         this.canvas.setAttribute('width', this.size.width);
         this.canvas.setAttribute('height', this.size.height);
+        this.canvas.style.cursor = 'crosshair';
         this.canvas.setAttribute('id', 'canvas');
         canvasElm.appendChild(this.canvas);
         this.context = this.canvas.getContext('2d');
