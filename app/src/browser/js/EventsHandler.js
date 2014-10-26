@@ -40,11 +40,17 @@ export class EventsHandler {
         var isTouchEvent = e.touches ? true : false;
         var x, y;
         if(isTouchEvent) {
-            x = e.touches[0].pageX;
-            y = e.touches[0].pageY;
+            x = e.touches.item(0).pageX - this.offsetLeft;
+            y = e.touches.item(0).pageY - this.offsetTop;
         } else {
-            x = e.pageX;
-            y = e.pageY;
+            if(typeof e.offsetX !== 'undefined') {
+              x = e.offsetX;
+              y = e.offsetY;
+            }
+            else if(e.layerX) {
+              x = e.layerX;
+              y = e.layerY;
+            }
         }
 
         return {
